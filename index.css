@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: 100;
+}
+body::-webkit-scrollbar{display: none;}
+
+#clock-display, #weather-display {
+	text-shadow: 0 0 5px rgba(0, 0, 0, .5);
+	position: absolute;
+	top: 5%; left: 5%;
+	font-size: 60px;
+	color: white;
+	pointer-events: none;
+	contain: paint;
+}
+
+#weather-display {
+	font-size: 20px;
+	top: calc(5% + 65px);
+	left: calc(5% + 5px);
+	text-align: left;
+	vertical-align: middle;
+	pointer-events: none;
+	line-height: 32px;
+	max-width: 200px;
+	contain: paint;
+}
+
+#clock-display {letter-spacing: 5px;}
+
+#background-container {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	object-fit: fill;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: -2;
+	pointer-events: none;
+}
+
+.background-content {
+	object-fit: fill;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+#dials {
+	position: static;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: calc(5% + 150px);
+	margin-bottom: 100;
+	top: 0;
+	left: 0;
+}
+
+#dials table {
+	height: auto;
+	border: 0 none;
+	border-spacing: 5px;
+	border-collapse: separate;
+	border: 0 none;
+}
+
+.dial {
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0);
+	background-origin: border-box;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	display: block;
+	background-color: transparent;
+	position: relative;
+	float: none;
+	padding: 10px;
+	opacity: .8;
+	color: rgba(255, 255, 255, 0);
+	transform: scale(1, 1);
+	transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
+	-webkit-transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
+	-moz-transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
+	will-change: opacity, transform;
+	contain: paint;
+	z-index: 0;
+}
+
+.dial:hover, .dial:focus {
+	transform: scale(1.1, 1.1);
+	background-color: rgb(150, 200, 255);
+	color: rgba(255, 255, 255, 255);
+	opacity: 1;
+	z-index: 1;
+	contain: none;
+}
+
+.dial .label, .dial .close-btn, .dial .title {
+	transition: opacity .3s ease-in-out;
+	-webkit-transition: opacity .3s ease-in-out;
+	-moz-transition: opacity .3s ease-in-out;
+	will-change: opacity;
+	opacity: 0;
+}
+
+.dial:hover .label, .dial:hover .close-btn, .dial:hover .title {opacity: 1;}
+
+.dial .close-btn {top: 11px;right: 11px;}
+
+.dial .image, .dial .image-add {
+	font-size: 120px;
+	text-decoration: none;
+	color: rgb(30, 30, 30);
+	left: 0; top: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	background-size: cover;
+	background-color: white;
+	box-shadow: 0 0 9px rgba(0, 0, 0, .5);
+	text-transform: uppercase;
+	display: block;
+	float: none;
+	clear: both;
+}
+
+.dial .image p, .dial .image-add p {
+	content: '';
+	margin: 0;
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+	display: block;
+	color: white;
+	opacity: .5;
+	text-shadow: 0 0 5px black;
+}
+
+.dial .image-add {opacity: .3;}
+.dial .image-add::after {
+	content: '+';
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.dial .label, .dial .title {
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	padding: 10;
+	background-color: rgba(75, 75, 75);
+	color: white;
+	padding: 2px;
+	left: 5px;
+	font-size: 10;
+	text-decoration: none;
+	pointer-events: none;
+	text-overflow: clip;
+	overflow: hidden;
+	float: none;
+}
+
+.dial .label {
+	top: -5px;
+	max-width: calc(100% - 15px);
+}
+
+.dial .title {
+	opacity: .5;
+	font-weight: 100;
+	font-size: 16px;
+	width: calc(100% - 2px);
+	top: -1px; left: -1px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	text-transform: none;
+}
+
+#popup {
+	position: fixed;
+	display: block;
+	background-color: rgba(0, 0, 0, .3);
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	backdrop-filter: blur(1rem);
+}
+
+#popup .container {
+	position: relative;
+	overflow: hidden;
+	background-color: rgb(255, 255, 255);
+	top: 50%;
+	left: 50%;
+	width: 400px;
+	transform: translate(-50%, -50%);
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 8px;
+	padding-top: 40;
+	font-size: 16px;
+	color: rgb(30, 30, 30);
+}
+
+#popup .title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 5px;
+	text-align: left;
+	font-size: 16px;
+	color: white;
+	background-color: rgb(0, 200, 255);
+	width: 100%;
+}
+
+#popup input {
+	left: 0;
+	width: calc(100% - 8px);
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(100, 100, 100);
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 16px;
+	position: relative;
+	display: inline;
+	margin: 5px;
+}
+
+#popup input:focus {border: 1px solid rgb(30, 30, 30);}
+
+#popup .button {
+	background-color: rgb(180, 180, 200);
+	border: 1px solid rgb(100, 100, 100);
+	color: rgb(30, 30, 30);
+	font-size: 14px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px;
+	position: relative;
+}
+
+#popup .button:hover {background-color: rgb(150, 200, 255);}
+
+.close-btn {
+	display: block;
+	width: 18px;
+	height: 18px;
+	border-radius: 100%;
+	background-color: rgba(255, 255, 255, .9);
+	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+	position: absolute;
+	text-decoration: none;
+	font-size: 14px;
+	right: 10;
+	top: 10;
+	float: none;
+	clear: both;
+	will-change: background-color;
+	z-index: 1;
+}
+
+.close-btn::before, .close-btn::after {
+	position: absolute;
+	left: 50%; top: 50%;
+	content: '\00d7';
+	display: block;
+	transform: translate(-50%, -50%);
+}
+
+.close-btn:hover {background-color: rgba(255, 100, 100);}
+
+.onscroll, .onscroll * {
+	pointer-events: none !important;
+	image-rendering: optimizeSpeed !important;
+}
+
+#setting {
+	background: linear-gradient(-45deg rgb());
+	transform: rotate(45deg);
+}
