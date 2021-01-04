@@ -1,6 +1,6 @@
 var tab_cols, popup, input_name, input_url;
-var localStorage = window.localStorage;
-//localStorage.clear();
+var storage = window.localStorage;
+//storage.clear();
 
 function addNodePopup() {
 	if (popup) {
@@ -82,7 +82,7 @@ http.timeout = 1000;
 
 async function newNode(name, url) {
 	let {href, hostname} = new URL(url);
-	let json = localStorage.getItem('bookmarks_list'), list;
+	let json = storage.getItem('bookmarks_list'), list;
 	if (json) {list = JSON.parse(json);}
 	if (!list) {list = [];}
 
@@ -93,12 +93,12 @@ async function newNode(name, url) {
 	node.name = name;
 	node.icon_src = 'https://logo.clearbit.com/' + encodeURI(hostname) + '?size=512';
 	list.push(node);
-	localStorage.setItem('bookmarks_list', JSON.stringify(list));
+	storage.setItem('bookmarks_list', JSON.stringify(list));
 	await loadNodes();
 }
 
 async function rmNode(item){
-	let json = localStorage.getItem('bookmarks_list');
+	let json = storage.getItem('bookmarks_list');
 	if (!json | !item) return;
 	let list = JSON.parse(json);
 	if (!list) return;
@@ -109,7 +109,7 @@ async function rmNode(item){
 			list.splice(index, 1);
 		}
 	})
-	localStorage.setItem('bookmarks_list', JSON.stringify(list));
+	storage.setItem('bookmarks_list', JSON.stringify(list));
 	await loadNodes();
 }
 
@@ -276,15 +276,15 @@ async function processNode(node) {
 
 var version = '2';
 function loadNodes() {
-	if (localStorage.getItem('version') !== version) {
-		localStorage.clear();
-		localStorage.setItem('version', version);
+	if (storage.getItem('version') !== version) {
+		storage.clear();
+		storage.setItem('version', version);
 	}
 
-	tab_cols = localStorage.getItem('table_wide');
+	tab_cols = storage.getItem('table_wide');
 	if (!tab_cols) tab_cols = 5;
 
-	let json = localStorage.getItem('bookmarks_list'), list;
+	let json = storage.getItem('bookmarks_list'), list;
 	let div = document.getElementById('dials');
 	div.innerHTML = '';
 
@@ -302,7 +302,7 @@ function loadNodes() {
 		list.forEach(processNode);
 	} else {
 		list = [];
-		localStorage.setItem('bookmarks_list', list);
+		storage.setItem('bookmarks_list', list);
 	}
 
 	if (node_index % tab_cols == 0) table_row = table.insertRow();
