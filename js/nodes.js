@@ -269,7 +269,7 @@ async function processNode(node) {
 	if (node) {
 		node_index++;
 		let cell = table_row.insertCell();
-		let inner = await performNode(node, node_index);
+		let inner = await performNode(node, node_index - 1);
 		cell.appendChild(inner);
 	}
 }

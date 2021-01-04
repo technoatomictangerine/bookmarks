@@ -20,12 +20,9 @@ async function drop(ev){
 	if (!json) return;
 	list = JSON.parse(json);
 
-
-	console.log(oldid, newid);
 	if (list !== undefined && oldid !== NaN && oldid !== undefined && newid !== NaN && newid !== undefined) {
 		move(list, oldid, newid);
 		localStorage.setItem('bookmarks_list', JSON.stringify(list));
-		console.log(list);
 		await loadNodes();
 	}
 }
