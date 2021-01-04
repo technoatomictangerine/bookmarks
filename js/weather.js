@@ -10,13 +10,12 @@ if (lat & lon) {
 	navigator.geolocation.getCurrentPosition(onSuccess);
 }
 
-async function onSuccess(pos) {
-	if (!lat || !lon) {
-		lat = pos.coords.latitude;
-		lon = pos.coords.longitude;
-		storage.setItem('pos_lat', lat);
-		storage.setItem('pos_lon', lon);
-	}
+function onSuccess(pos) {
+	lat = pos.coords.latitude;
+	lon = pos.coords.longitude;
+	storage.setItem('pos_lat', lat);
+	storage.setItem('pos_lon', lon);
+	updateWeather();
 }
 
 async function updateWeather() {
