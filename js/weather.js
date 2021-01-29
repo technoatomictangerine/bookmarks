@@ -1,6 +1,4 @@
 var apikey = '4d8fb5b93d4af21d66a2948710284366';
-var lang = encodeURI(navigator.language || navigator.userLanguage);
-var langcode = lang.slice(0, 2);
 var storage = window.localStorage;
 var lat = storage.getItem('pos_lat'), lon = storage.getItem('pos_lon');
 
@@ -19,6 +17,7 @@ function onSuccess(pos) {
 }
 
 async function updateWeather() {
+	let langcode = (navigator.language || navigator.userLanguage).slice(0, 2);
 	let res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=daily,hourly,minutely&appid=${apikey}&lang=${langcode}&units=metric`);
 	let data;
 

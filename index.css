@@ -6,19 +6,32 @@ body {
 }
 body::-webkit-scrollbar{display: none;}
 
+@keyframes fadein {
+	0% {
+		opacity: 0;
+		transform: scale(1.5, 1.5);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1, 1);
+		animation: none;
+		will-change: none;
+	}
+}
+
 #clock-display, #weather-display {
-	text-shadow: 0 0 5px rgba(0, 0, 0, .5);
+	text-shadow: 0 0 5px var(--shadow);
 	position: absolute;
 	top: 5%; left: 5%;
-	font-size: 60px;
-	color: white;
+	font-size: 2.5em;
+	color: var(--text);
 	pointer-events: none;
 	contain: paint;
 }
 
 #weather-display {
-	font-size: 20px;
-	top: calc(5% + 65px);
+	font-size: 1em;
+	top: calc(5% + 2.5em + 5px);
 	left: calc(5% + 5px);
 	text-align: left;
 	vertical-align: middle;
@@ -76,30 +89,35 @@ body::-webkit-scrollbar{display: none;}
 	width: 100%;
 	height: 100%;
 	border-radius: 10px;
-	background-color: rgba(0, 0, 0, 0);
+	text-decoration: none;
+	background-color: transparent;
 	background-origin: border-box;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
 	display: block;
-	background-color: transparent;
 	position: relative;
 	float: none;
 	padding: 10px;
 	opacity: .8;
-	color: rgba(255, 255, 255, 0);
 	transform: scale(1, 1);
 	transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
 	-webkit-transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
 	-moz-transition: opacity .3s ease-in-out, background-color .3s ease-in-out, transform .3s ease-in-out;
 	will-change: opacity, transform;
+	cursor: pointer;
 	contain: paint;
 	z-index: 0;
 }
 
+.animation {
+	animation: fadein .2s linear;
+	will-change: transform opacity;
+}
+
 .dial:hover, .dial:focus {
 	transform: scale(1.1, 1.1);
-	background-color: rgb(150, 200, 255);
-	color: rgba(255, 255, 255, 255);
+	background-color: var(--border);
+	color: var(--text);
 	opacity: 1;
 	z-index: 1;
 	contain: none;
@@ -118,7 +136,8 @@ body::-webkit-scrollbar{display: none;}
 .dial .close-btn {top: 11px;right: 11px;}
 
 .dial .image, .dial .image-add {
-	font-size: 120px;
+	background-position: center;
+	font-size: 5rem;
 	text-decoration: none;
 	color: rgb(30, 30, 30);
 	left: 0; top: 0;
@@ -127,11 +146,12 @@ body::-webkit-scrollbar{display: none;}
 	border-radius: 5px;
 	background-size: cover;
 	background-color: white;
-	box-shadow: 0 0 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 0 9px var(--shadow);
 	text-transform: uppercase;
 	display: block;
 	float: none;
 	clear: both;
+	pointer-events: none;
 }
 
 .dial .image p, .dial .image-add p {
@@ -141,9 +161,10 @@ body::-webkit-scrollbar{display: none;}
 	top: 50%; left: 50%;
 	transform: translate(-50%, -50%);
 	display: block;
-	color: white;
+	color: var(--text);
 	opacity: .5;
-	text-shadow: 0 0 5px black;
+	text-shadow: 0 0 5px var(--shadow);
+	pointer-events: none;
 }
 
 .dial .image-add {opacity: .3;}
@@ -159,16 +180,16 @@ body::-webkit-scrollbar{display: none;}
 	text-align: center;
 	vertical-align: middle;
 	padding: 10;
-	background-color: rgba(75, 75, 75);
-	color: white;
+	background-color: var(--label);
+	color: var(--ltext);
 	padding: 2px;
 	left: 5px;
 	font-size: 10;
 	text-decoration: none;
-	pointer-events: none;
 	text-overflow: clip;
 	overflow: hidden;
 	float: none;
+	pointer-events: none;
 }
 
 .dial .label {
@@ -265,7 +286,7 @@ body::-webkit-scrollbar{display: none;}
 	height: 18px;
 	border-radius: 100%;
 	background-color: rgba(255, 255, 255, .9);
-	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+	box-shadow: 0 0 5px var(--shadow);
 	position: absolute;
 	text-decoration: none;
 	font-size: 14px;
@@ -293,6 +314,14 @@ body::-webkit-scrollbar{display: none;}
 }
 
 #setting {
-	background: linear-gradient(-45deg rgb());
+	top: 0px; right: -128px;
+	width: 128px; height: 128px;
+	position: fixed;
+	background: linear-gradient(90deg, rgb(200, 255, 255), rgb(100, 255, 100));
 	transform: rotate(45deg);
+	z-index: 1000;
+}
+
+#setting:after {
+	content: 'Settings';
 }

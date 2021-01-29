@@ -1,4 +1,5 @@
 var clock_timer, clock_element;
+var body = document.body, timer;
 
 function updateClock() {
 	let time = new Date();
@@ -15,7 +16,7 @@ function updateClock() {
 }
 
 function updateBackground(){
-	let src = localStorage.getItem('background_video');
+	let src = window.localStorage.getItem('background_video');
 	let obj = document.getElementById('background-container');
 	if (!src)src = 'src/background.jpg';
 
@@ -40,11 +41,12 @@ async function OnLoaded() {
 	clock_element = document.getElementById('clock-display');
 	updateBackground();
 	updateClock();
+	let settings = document.createElement('div');
+	settings.id = 'settings';
+	body.appendChild(settings);
 }
 
 document.addEventListener("DOMContentLoaded", OnLoaded);
-
-var body = document.body, timer;
 
 function onScroll(){
 	clearTimeout(timer);

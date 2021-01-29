@@ -194,7 +194,7 @@ function setIndex(node, index) {
 
 function loadImg(url) {
 	return new Promise((resolve, reject) => {
-		let obj = new Image(512, 512);
+		let obj = new Image(cell_w, cell_w);
 		obj.addEventListener('load', () => resolve(url));
 		obj.addEventListener('error', () => reject());
 		obj.src = url;
@@ -202,28 +202,14 @@ function loadImg(url) {
 }
 
 var done = {};
-async function performNode(item, index) {
-	let entry = document.createElement('div');
-	entry.style.cursor = 'move';
-	entry.draggable = true;
-	entry.setAttribute('ondragstart', 'dragStart(event)');
-	entry.setAttribute('ondragover', 'disableDrop(event)');
-	entry.setAttribute('ondragenter', 'dragEnter(event)');
-	entry.setAttribute('ondragleave', 'dragLeave(event)');
-	entry.setAttribute('ondrop', 'drop(event)');
-	entry.style.width = cell_w;
-	entry.style.height = cell_h;
-	entry.className = 'dial';
-
+async function performNode(entry, item, index) {
 	let btn = document.createElement('a');
 	btn.className = 'close-btn';
 	btn.href = '#';
 	btn.addEventListener('click', function(){rmNode(item)});
-	entry.appendChild(btn);
 
-	let img = document.createElement('a');
+	let img = document.createElement('div');
 	img.className = 'image';
-	img.href = item.url;
 	img.style.backgroundColor = stringToColor(item.url);
 
 	if (done[item.icon_src]) {
@@ -232,32 +218,36 @@ async function performNode(item, index) {
 		await loadImg(item.icon_src)
 			.then(url => {img.style.backgroundImage = `url(${url})`;done[url] = true;})
 			.catch(() => {img.innerHTML = `<p>${makeShortString(item.name)}</p>`;});
+		entry.classList.add('animation');
+		setTimeout(() => entry.classList.remove('animation'), 200);
 	};
-	entry.appendChild(img);
 
 	let label = document.createElement('span');
 	label.className = 'label';
 	label.innerText = item.url;
-	entry.appendChild(label);
 
 	let title = document.createElement('div');
 	title.className = 'title';
 	title.innerText = item.name;
+
+	entry.appendChild(btn);
+	entry.appendChild(img);
+	entry.appendChild(label);
 	img.appendChild(title);
 	setIndex(entry, index);
-	return entry
 }
 
 function performAddButton() {
-	let entry = document.createElement('div');
+	let entry = document.createElement('a');
 	entry.style.width = cell_w;
 	entry.style.height = cell_h;
 	entry.className = 'dial';
 
-	let img = document.createElement('a');
+	let img = document.createElement('div');
 	img.className = 'image-add';
 	img.href = '#';
-	img.addEventListener('click', addNodePopup);
+
+	entry.addEventListener('click', addNodePopup);
 	entry.appendChild(img);
 	return entry
 }
@@ -269,8 +259,22 @@ async function processNode(node) {
 	if (node) {
 		node_index++;
 		let cell = table_row.insertCell();
-		let inner = await performNode(node, node_index - 1);
-		cell.appendChild(inner);
+
+		let entry = document.createElement('a');
+		entry.href = node.url;
+		entry.draggable = true;
+		entry.style.width = cell_w;
+		entry.style.height = cell_h;
+		entry.className = 'dial';
+
+		cell.appendChild(entry);
+
+		await performNode(entry, node, node_index - 1);
+		entry.setAttribute('ondragstart', 'dragStart(event)');
+		entry.setAttribute('ondragover', 'disableDrop(event)');
+		entry.setAttribute('ondragenter', 'dragEnter(event)');
+		entry.setAttribute('ondragleave', 'dragLeave(event)');
+		entry.setAttribute('ondrop', 'drop(event)');
 	}
 }
 
@@ -314,11 +318,9 @@ function loadNodes() {
 	cell.appendChild(inner);
 }
 
-async function onLoaded() {
-	await loadNodes();
-	let button = document.getElementById('input-dial-accept');
+let delay;
+window.onresize = function() {
+	clearTimeout(delay);
+	delay = setTimeout(loadNodes, 250);
 }
-
-window.onresize = loadNodes;
-
-document.addEventListener("DOMContentLoaded", onLoaded);
+document.addEventListener("DOMContentLoaded", loadNodes);
