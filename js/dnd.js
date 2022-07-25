@@ -1,6 +1,12 @@
 function move(arr, old_id, new_id) {
-    let a = arr[old_id], b = arr[new_id];
-    if (a !== null && a !== undefined && b !== null && b !== undefined) arr[new_id] = a; arr[old_id] = b;
+    if (new_id >= arr.length) {
+        var k = new_id - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_id, 0, arr.splice(old_id, 1)[0]);
+    return arr;
 };
 
 function disableDrop(ev){ev.preventDefault();}
