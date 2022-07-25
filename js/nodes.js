@@ -1,6 +1,5 @@
 var tab_cols, popup, input_name, input_url;
 var storage = window.localStorage;
-//storage.clear();
 
 function addNodePopup() {
 	if (popup) {
@@ -77,6 +76,8 @@ function addNodePopup() {
 	}
 }
 
+var proxy = 'https://proxy.duckduckgo.com/iu/?u=';
+var service = 'https://logo.clearbit.com/';
 var http = new XMLHttpRequest();
 http.timeout = 1000;
 
@@ -91,7 +92,7 @@ async function newNode(name, url) {
 	node.url = href;
 	if (!name | name.length == 0) name = hostname;
 	node.name = name;
-	node.icon_src = 'https://logo.clearbit.com/' + encodeURI(hostname) + '?size=512';
+	node.icon_src = proxy + service + encodeURI(hostname) + '?size=512';
 	list.push(node);
 	storage.setItem('bookmarks_list', JSON.stringify(list));
 	await loadNodes();
